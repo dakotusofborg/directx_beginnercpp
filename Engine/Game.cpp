@@ -42,4 +42,24 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
+    // Reticle centered in lower right quadrant (center: 599, 449)
+    // Horizontal line (left)
+    gfx.PutPixel(594, 449, 255, 255, 255);
+    gfx.PutPixel(595, 449, 255, 255, 255);
+    gfx.PutPixel(596, 449, 255, 255, 255);
+
+    // Horizontal line (right)
+    gfx.PutPixel(602, 449, 255, 255, 255);
+    gfx.PutPixel(603, 449, 255, 255, 255);
+    gfx.PutPixel(604, 449, 255, 255, 255);
+
+    // Vertical line (top)
+    gfx.PutPixel(599, 444, 255, 255, 255);
+    gfx.PutPixel(599, 445, 255, 255, 255);
+    gfx.PutPixel(599, 446, 255, 255, 255);
+
+    // Vertical line (bottom)
+    gfx.PutPixel(599, 452, 255, 255, 255);
+    gfx.PutPixel(599, 453, 255, 255, 255);
+    gfx.PutPixel(599, 454, 255, 255, 255);
 }
