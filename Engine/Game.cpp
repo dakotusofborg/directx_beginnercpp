@@ -42,24 +42,27 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-    // Reticle centered in lower right quadrant (center: 599, 449)
+    int centerX = 400;
+    int centerY = 300; 
+
+    // Reticle centered in the middle of the screen (center: 400, 300)
     // Horizontal line (left)
-    gfx.PutPixel(594, 449, 255, 255, 255);
-    gfx.PutPixel(595, 449, 255, 255, 255);
-    gfx.PutPixel(596, 449, 255, 255, 255);
+    gfx.PutPixel(centerX - 5, centerY, 255, 255, 255);
+    gfx.PutPixel(centerX - 4, centerY, 255, 255, 255);
+    gfx.PutPixel(centerX - 3, centerY, 255, 255, 255);
 
     // Horizontal line (right)
-    gfx.PutPixel(602, 449, 255, 255, 255);
-    gfx.PutPixel(603, 449, 255, 255, 255);
-    gfx.PutPixel(604, 449, 255, 255, 255);
+    gfx.PutPixel(centerX + 3, centerY, 255, 255, 255);
+    gfx.PutPixel(centerX + 4, centerY, 255, 255, 255);
+    gfx.PutPixel(centerX + 5, centerY, 255, 255, 255);
 
     // Vertical line (top)
-    gfx.PutPixel(599, 444, 255, 255, 255);
-    gfx.PutPixel(599, 445, 255, 255, 255);
-    gfx.PutPixel(599, 446, 255, 255, 255);
+    gfx.PutPixel(centerX, centerY - 5, 255, 255, 255);
+    gfx.PutPixel(centerX, centerY - 4, 255, 255, 255);
+    gfx.PutPixel(centerX, centerY - 3, 255, 255, 255);
 
     // Vertical line (bottom)
-    gfx.PutPixel(599, 452, 255, 255, 255);
-    gfx.PutPixel(599, 453, 255, 255, 255);
-    gfx.PutPixel(599, 454, 255, 255, 255);
+    gfx.PutPixel(centerX, centerY + 3, 255, 255, 255);
+    gfx.PutPixel(centerX, centerY + 4, 255, 255, 255);
+    gfx.PutPixel(centerX, centerY + 5, 255, 255, 255);
 }
