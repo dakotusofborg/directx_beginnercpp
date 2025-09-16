@@ -38,39 +38,84 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-}
-
-void Game::ComposeFrame()
-{
     if (wnd.kbd.KeyIsPressed(VK_RIGHT))
     {
-        x = x + 3;
+        if (inhibitRight)
+        {
+        }
+        else
+        {
+            vX = vX + 1;
+            inhibitRight = true;
+        }
+    }
+    else
+    {
+		inhibitRight = false;
     }
 
     if (wnd.kbd.KeyIsPressed(VK_LEFT))
     {
-        x = x - 3;
+        if (inhibitLeft)
+        {
+        }
+        else
+        {
+            vX = vX - 1;
+            inhibitLeft = true;
+		}
+    }
+    else
+    {
+		inhibitLeft = false;
     }
 
     if (wnd.kbd.KeyIsPressed(VK_DOWN))
     {
-        y = y + 3;
+        if (inhibitDown)
+        {
+        }
+        else
+        {
+            vY = vY + 1;
+            inhibitDown = true;
+        }
+    }
+    else
+    {
+		inhibitDown = false;
     }
 
     if (wnd.kbd.KeyIsPressed(VK_UP))
     {
-        y = y - 3;
+        if (inhibitUp)
+        {
+        }
+        else
+        {
+            vY = vY - 1;
+            inhibitUp = true;
+		}
+    }
+    else
+    {
+		inhibitUp = false;
     }
 
-    int r = 255;
-    int b = 255;
-    int g = 255;
+	x = x + vX;
+	y = y + vY;
 
     if (wnd.kbd.KeyIsPressed(VK_CONTROL))
     {
         r = 0;
     }
-    if (wnd.kbd.KeyIsPressed(VK_SHIFT))
+
+	shapeIsChanged = wnd.kbd.KeyIsPressed(VK_SHIFT);
+}
+
+void Game::ComposeFrame()
+{
+    if (shapeIsChanged)
     {
         gfx.PutPixel(-5 + x, -5 + y, r, g, b);
         gfx.PutPixel(-5 + x, -4 + y, r, g, b);
