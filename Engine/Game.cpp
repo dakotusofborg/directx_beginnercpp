@@ -102,55 +102,143 @@ void Game::UpdateModel()
 		inhibitUp = false;
     }
 
-	x = x + vX;
-	y = y + vY;
+	const int left_dynamic = dynamicX - 5;
+	const int right_dynamic = dynamicX + 5;
+	const int top_dynamic = dynamicY - 5;
+	const int bottom_dynamic = dynamicY + 5;
 
-    if (wnd.kbd.KeyIsPressed(VK_CONTROL))
+	const int left_static = staticX - 5;
+	const int right_static = staticX + 5;
+	const int top_static = staticY - 5;
+	const int bottom_static = staticY + 5;
+
+    if( left_dynamic < right_static &&
+        right_dynamic > left_static &&
+        top_dynamic < bottom_static &&
+        bottom_dynamic > top_static )
     {
-        r = 0;
+        colliding = true;
+    }
+    else
+    {
+        colliding = false;
+	}
+
+	dynamicX = dynamicX + vX;
+	dynamicY = dynamicY + vY;
+
+    if (dynamicX + 5 >= gfx.ScreenWidth)
+    {
+        dynamicX = gfx.ScreenWidth - 6;
+        vX = 0;
+    }
+    if (dynamicX - 5 < 0)
+    {
+        dynamicX = 5;
+        vX = 0;
+    }
+    if (dynamicY + 5 >= gfx.ScreenHeight)
+    {
+        dynamicY = gfx.ScreenHeight - 6;
+        vY = 0;
+    }
+    if (dynamicY - 5 < 0)
+    {
+        dynamicY = 5;
+        vY = 0;
     }
 
-	shapeIsChanged = wnd.kbd.KeyIsPressed(VK_SHIFT);
+    /*shapeIsChanged = false;
+    if (!(x > 200 && x < 300))
+    {
+        shapeIsChanged = true;
+    }*/
+
+    /*if (x >= staticX - tolerance && x <= staticX + tolerance && y >= staticY - tolerance && y <= staticY + tolerance)
+    {
+        r = 255; g = 0; b = 0;
+    }
+    else
+    {
+        r = 255; g = 255; b = 255;
+	}*/
 }
 
 void Game::ComposeFrame()
 {
-    if (shapeIsChanged)
+    if (colliding)
     {
-        gfx.PutPixel(-5 + x, -5 + y, r, g, b);
-        gfx.PutPixel(-5 + x, -4 + y, r, g, b);
-        gfx.PutPixel(-5 + x, -3 + y, r, g, b);
-        gfx.PutPixel(-4 + x, -5 + y, r, g, b);
-        gfx.PutPixel(-3 + x, -5 + y, r, g, b);
-        gfx.PutPixel(-5 + x, 5 + y, r, g, b);
-        gfx.PutPixel(-5 + x, 4 + y, r, g, b);
-        gfx.PutPixel(-5 + x, 3 + y, r, g, b);
-        gfx.PutPixel(-4 + x, 5 + y, r, g, b);
-        gfx.PutPixel(-3 + x, 5 + y, r, g, b);
-        gfx.PutPixel(5 + x, -5 + y, r, g, b);
-        gfx.PutPixel(5 + x, -4 + y, r, g, b);
-        gfx.PutPixel(5 + x, -3 + y, r, g, b);
-        gfx.PutPixel(4 + x, -5 + y, r, g, b);
-        gfx.PutPixel(3 + x, -5 + y, r, g, b);
-        gfx.PutPixel(5 + x, 5 + y, r, g, b);
-        gfx.PutPixel(5 + x, 4 + y, r, g, b);
-        gfx.PutPixel(5 + x, 3 + y, r, g, b);
-        gfx.PutPixel(4 + x, 5 + y, r, g, b);
-        gfx.PutPixel(3 + x, 5 + y, r, g, b);
+        dynamicR = 255;
+        dynamicG = 0;
+        dynamicB = 0;
     }
     else
     {
-        gfx.PutPixel(-5 + x, y, r, g, b);
-        gfx.PutPixel(-4 + x, y, r, g, b);
-        gfx.PutPixel(-3 + x, y, r, g, b);
-        gfx.PutPixel(3 + x, y, r, g, b);
-        gfx.PutPixel(4 + x, y, r, g, b);
-        gfx.PutPixel(5 + x, y, r, g, b);
-        gfx.PutPixel(x, -5 + y, r, g, b);
-        gfx.PutPixel(x, -4 + y, r, g, b);
-        gfx.PutPixel(x, -3 + y, r, g, b);
-        gfx.PutPixel(x, 3 + y, r, g, b);
-        gfx.PutPixel(x, 4 + y, r, g, b);
-        gfx.PutPixel(x, 5 + y, r, g, b);
+        dynamicR = 255;
+        dynamicG = 255;
+        dynamicB = 255;
+	}
+    
+    if (shapeIsChanged)
+    {
+        gfx.PutPixel(-5 + dynamicX, dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(-4 + dynamicX, dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(-3 + dynamicX, dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(3 + dynamicX, dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(4 + dynamicX, dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(5 + dynamicX, dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(dynamicX, -5 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(dynamicX, -4 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(dynamicX, -3 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(dynamicX, 3 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(dynamicX, 4 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(dynamicX, 5 + dynamicY, dynamicR, dynamicG, dynamicB);
     }
+    else
+    {
+        gfx.PutPixel(-5 + dynamicX, -5 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(-5 + dynamicX, -4 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(-5 + dynamicX, -3 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(-4 + dynamicX, -5 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(-3 + dynamicX, -5 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(-5 + dynamicX, 5 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(-5 + dynamicX, 4 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(-5 + dynamicX, 3 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(-4 + dynamicX, 5 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(-3 + dynamicX, 5 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(5 + dynamicX, -5 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(5 + dynamicX, -4 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(5 + dynamicX, -3 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(4 + dynamicX, -5 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(3 + dynamicX, -5 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(5 + dynamicX, 5 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(5 + dynamicX, 4 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(5 + dynamicX, 3 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(4 + dynamicX, 5 + dynamicY, dynamicR, dynamicG, dynamicB);
+        gfx.PutPixel(3 + dynamicX, 5 + dynamicY, dynamicR, dynamicG, dynamicB);
+    }
+
+    gfx.PutPixel(-5 + staticX, -5 + staticY, staticR, staticG, staticB);
+    gfx.PutPixel(-5 + staticX, -4 + staticY, staticR, staticG, staticB);
+    gfx.PutPixel(-5 + staticX, -3 + staticY, staticR, staticG, staticB);
+    gfx.PutPixel(-4 + staticX, -5 + staticY, staticR, staticG, staticB);
+    gfx.PutPixel(-3 + staticX, -5 + staticY, staticR, staticG, staticB);
+
+    gfx.PutPixel(-5 + staticX, 5 + staticY, staticR, staticG, staticB);
+    gfx.PutPixel(-5 + staticX, 4 + staticY, staticR, staticG, staticB);
+    gfx.PutPixel(-5 + staticX, 3 + staticY, staticR, staticG, staticB);
+    gfx.PutPixel(-4 + staticX, 5 + staticY, staticR, staticG, staticB);
+    gfx.PutPixel(-3 + staticX, 5 + staticY, staticR, staticG, staticB);
+                                                      
+    gfx.PutPixel(5 + staticX, -5 + staticY, staticR, staticG, staticB);
+    gfx.PutPixel(5 + staticX, -4 + staticY, staticR, staticG, staticB);
+    gfx.PutPixel(5 + staticX, -3 + staticY, staticR, staticG, staticB);
+    gfx.PutPixel(4 + staticX, -5 + staticY, staticR, staticG, staticB);
+    gfx.PutPixel(3 + staticX, -5 + staticY, staticR, staticG, staticB);
+
+    gfx.PutPixel(5 + staticX, 5 + staticY, staticR, staticG, staticB);
+    gfx.PutPixel(5 + staticX, 4 + staticY, staticR, staticG, staticB);
+    gfx.PutPixel(5 + staticX, 3 + staticY, staticR, staticG, staticB);
+    gfx.PutPixel(4 + staticX, 5 + staticY, staticR, staticG, staticB);
+    gfx.PutPixel(3 + staticX, 5 + staticY, staticR, staticG, staticB);
 }

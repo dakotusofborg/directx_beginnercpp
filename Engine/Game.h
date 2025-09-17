@@ -40,15 +40,22 @@ private:
 private:
 	MainWindow& wnd;
 	Graphics gfx;
-	int x = 400;
-	int y = 300;
+	int dynamicX = 400;
+	int dynamicY = 300;
+	int staticX = 200;
+	int staticY = 300;
 
+	bool colliding = false;
+	
 	int vX = 0;
 	int vY = 0;
 
-	int r = 255;
-	int b = 255;
-	int g = 255;
+	int dynamicR = 255;
+	int dynamicG = 255;
+	int dynamicB = 255;
+	int staticR = 0;
+	int staticG = 255;
+	int staticB = 0;
 	
 	bool shapeIsChanged = false;
 	bool inhibitUp = false;
