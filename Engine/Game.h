@@ -36,26 +36,37 @@ private:
 	void UpdateModel();
 	/********************************/
 	/*  User Functions              */
+	void DrawBox(int x, int y, int r, int g, int b);
+	bool OverlapTest(int box0x, int box0y, int box1x, int box1y);
 	/********************************/
 private:
 	MainWindow& wnd;
 	Graphics gfx;
 	int dynamicX = 400;
 	int dynamicY = 300;
-	int staticX = 200;
-	int staticY = 300;
+	int staticX0 = 200;
+	int staticY0 = 300;
+
+	int staticX1 = 210;
+	int staticY1 = 300;
+
+	int staticX2 = 215;
+	int staticY2 = 300;
+
+	int staticX3 = 230;
+	int staticY3 = 300;
 
 	bool colliding = false;
 	
 	int vX = 0;
 	int vY = 0;
 
-	int dynamicR = 255;
-	int dynamicG = 255;
-	int dynamicB = 255;
-	int staticR = 0;
-	int staticG = 255;
-	int staticB = 0;
+	//int dynamicR = 255;
+	//int dynamicG = 255;
+	//int dynamicB = 255;
+	///*int staticR = 0;
+	//int staticG = 255;
+	//int staticB = 0;*/
 	
 	bool shapeIsChanged = false;
 	bool inhibitUp = false;

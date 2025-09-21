@@ -102,29 +102,13 @@ void Game::UpdateModel()
 		inhibitUp = false;
     }
 
-	const int left_dynamic = dynamicX - 5;
-	const int right_dynamic = dynamicX + 5;
-	const int top_dynamic = dynamicY - 5;
-	const int bottom_dynamic = dynamicY + 5;
-
-	const int left_static = staticX - 5;
-	const int right_static = staticX + 5;
-	const int top_static = staticY - 5;
-	const int bottom_static = staticY + 5;
-
-    if( left_dynamic < right_static &&
-        right_dynamic > left_static &&
-        top_dynamic < bottom_static &&
-        bottom_dynamic > top_static )
-    {
-        colliding = true;
-    }
-    else
-    {
-        colliding = false;
-	}
-
-	dynamicX = dynamicX + vX;
+    colliding = 
+        OverlapTest(staticX0, staticY0, dynamicX, dynamicY) ||
+        OverlapTest(staticX1, staticY1, dynamicX, dynamicY) ||
+        OverlapTest(staticX2, staticY2, dynamicX, dynamicY) ||
+        OverlapTest(staticX3, staticY3, dynamicX, dynamicY);
+	
+    dynamicX = dynamicX + vX;
 	dynamicY = dynamicY + vY;
 
     if (dynamicX + 5 >= gfx.ScreenWidth)
@@ -154,7 +138,7 @@ void Game::UpdateModel()
         shapeIsChanged = true;
     }*/
 
-    /*if (x >= staticX - tolerance && x <= staticX + tolerance && y >= staticY - tolerance && y <= staticY + tolerance)
+    /*if (x >= x - tolerance && x <= x + tolerance && y >= y - tolerance && y <= y + tolerance)
     {
         r = 255; g = 0; b = 0;
     }
@@ -166,20 +150,23 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
+    DrawBox(staticX0, staticY0, 0, 255, 0);
+    DrawBox(staticX1, staticY1, 0, 255, 0);
+    DrawBox(staticX2, staticY2, 0, 255, 0);
+    DrawBox(staticX3, staticY3, 0, 255, 0);
+
+    DrawBox(dynamicX, dynamicY, 255, 255, 255);
+
     if (colliding)
     {
-        dynamicR = 255;
-        dynamicG = 0;
-        dynamicB = 0;
+        DrawBox(dynamicX, dynamicY, 255, 0, 0);
     }
     else
     {
-        dynamicR = 255;
-        dynamicG = 255;
-        dynamicB = 255;
+        DrawBox(dynamicX, dynamicY, 255, 255, 255);
 	}
     
-    if (shapeIsChanged)
+    /*if (shapeIsChanged)
     {
         gfx.PutPixel(-5 + dynamicX, dynamicY, dynamicR, dynamicG, dynamicB);
         gfx.PutPixel(-4 + dynamicX, dynamicY, dynamicR, dynamicG, dynamicB);
@@ -194,51 +181,53 @@ void Game::ComposeFrame()
         gfx.PutPixel(dynamicX, 4 + dynamicY, dynamicR, dynamicG, dynamicB);
         gfx.PutPixel(dynamicX, 5 + dynamicY, dynamicR, dynamicG, dynamicB);
     }
-    else
-    {
-        gfx.PutPixel(-5 + dynamicX, -5 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(-5 + dynamicX, -4 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(-5 + dynamicX, -3 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(-4 + dynamicX, -5 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(-3 + dynamicX, -5 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(-5 + dynamicX, 5 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(-5 + dynamicX, 4 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(-5 + dynamicX, 3 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(-4 + dynamicX, 5 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(-3 + dynamicX, 5 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(5 + dynamicX, -5 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(5 + dynamicX, -4 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(5 + dynamicX, -3 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(4 + dynamicX, -5 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(3 + dynamicX, -5 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(5 + dynamicX, 5 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(5 + dynamicX, 4 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(5 + dynamicX, 3 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(4 + dynamicX, 5 + dynamicY, dynamicR, dynamicG, dynamicB);
-        gfx.PutPixel(3 + dynamicX, 5 + dynamicY, dynamicR, dynamicG, dynamicB);
-    }
+    else*/
+ 
+	
+}
 
-    gfx.PutPixel(-5 + staticX, -5 + staticY, staticR, staticG, staticB);
-    gfx.PutPixel(-5 + staticX, -4 + staticY, staticR, staticG, staticB);
-    gfx.PutPixel(-5 + staticX, -3 + staticY, staticR, staticG, staticB);
-    gfx.PutPixel(-4 + staticX, -5 + staticY, staticR, staticG, staticB);
-    gfx.PutPixel(-3 + staticX, -5 + staticY, staticR, staticG, staticB);
+void  Game::DrawBox(int x, int y, int r, int g, int b)
+{
+    gfx.PutPixel(-5 + x, -5 + y, r, g, b);
+    gfx.PutPixel(-5 + x, -4 + y, r, g, b);
+    gfx.PutPixel(-5 + x, -3 + y, r, g, b);
+    gfx.PutPixel(-4 + x, -5 + y, r, g, b);
+    gfx.PutPixel(-3 + x, -5 + y, r, g, b);
 
-    gfx.PutPixel(-5 + staticX, 5 + staticY, staticR, staticG, staticB);
-    gfx.PutPixel(-5 + staticX, 4 + staticY, staticR, staticG, staticB);
-    gfx.PutPixel(-5 + staticX, 3 + staticY, staticR, staticG, staticB);
-    gfx.PutPixel(-4 + staticX, 5 + staticY, staticR, staticG, staticB);
-    gfx.PutPixel(-3 + staticX, 5 + staticY, staticR, staticG, staticB);
-                                                      
-    gfx.PutPixel(5 + staticX, -5 + staticY, staticR, staticG, staticB);
-    gfx.PutPixel(5 + staticX, -4 + staticY, staticR, staticG, staticB);
-    gfx.PutPixel(5 + staticX, -3 + staticY, staticR, staticG, staticB);
-    gfx.PutPixel(4 + staticX, -5 + staticY, staticR, staticG, staticB);
-    gfx.PutPixel(3 + staticX, -5 + staticY, staticR, staticG, staticB);
+    gfx.PutPixel(-5 + x, 5 + y, r, g, b);
+    gfx.PutPixel(-5 + x, 4 + y, r, g, b);
+    gfx.PutPixel(-5 + x, 3 + y, r, g, b);
+    gfx.PutPixel(-4 + x, 5 + y, r, g, b);
+    gfx.PutPixel(-3 + x, 5 + y, r, g, b);
 
-    gfx.PutPixel(5 + staticX, 5 + staticY, staticR, staticG, staticB);
-    gfx.PutPixel(5 + staticX, 4 + staticY, staticR, staticG, staticB);
-    gfx.PutPixel(5 + staticX, 3 + staticY, staticR, staticG, staticB);
-    gfx.PutPixel(4 + staticX, 5 + staticY, staticR, staticG, staticB);
-    gfx.PutPixel(3 + staticX, 5 + staticY, staticR, staticG, staticB);
+    gfx.PutPixel(5 + x, -5 + y, r, g, b);
+    gfx.PutPixel(5 + x, -4 + y, r, g, b);
+    gfx.PutPixel(5 + x, -3 + y, r, g, b);
+    gfx.PutPixel(4 + x, -5 + y, r, g, b);
+    gfx.PutPixel(3 + x, -5 + y, r, g, b);
+
+    gfx.PutPixel(5 + x, 5 + y, r, g, b);
+    gfx.PutPixel(5 + x, 4 + y, r, g, b);
+    gfx.PutPixel(5 + x, 3 + y, r, g, b);
+    gfx.PutPixel(4 + x, 5 + y, r, g, b);
+    gfx.PutPixel(3 + x, 5 + y, r, g, b);
+}
+
+bool Game::OverlapTest(int box0x, int box0y, int box1x, int box1y)
+{
+    const int left_box0 = box0x - 5;
+    const int right_box0 = box0x + 5;
+    const int top_box0 = box0y - 5;
+    const int bottom_box0 = box0y + 5;
+
+    const int left_box1 = box1x - 5;
+    const int right_box1 = box1x + 5;
+    const int top_box1 = box1y - 5;
+    const int bottom_box1 = box1y + 5;
+
+    return
+        left_box0 <= right_box1 &&
+        right_box0 >= left_box1 &&
+        top_box0 <= bottom_box1 &&
+        bottom_box0 >= top_box1;
 }
