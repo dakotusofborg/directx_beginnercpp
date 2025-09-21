@@ -46,22 +46,22 @@ private:
 	Graphics gfx;
 	int dynamicX = 400;
 	int dynamicY = 300;
-	int staticX0 = 200;
-	int staticY0 = 300;
-
-	int staticX1 = 210;
-	int staticY1 = 300;
-
-	int staticX2 = 215;
-	int staticY2 = 300;
-
+	
+	int staticX0 = 700;
+	int staticY0 = 200;
+	int staticX1 = 215;
+	int staticY1 = 200;
+	int staticX2 = 200;
+	int staticY2 = 220;
 	int staticX3 = 230;
-	int staticY3 = 300;
+	int staticY3 = 220;
 
 	bool colliding = false;
 	
 	int vX = 0;
 	int vY = 0;
+
+	int radius = 5;
 
 	//int dynamicR = 255;
 	//int dynamicG = 255;

@@ -111,8 +111,8 @@ void Game::UpdateModel()
     dynamicX = dynamicX + vX;
 	dynamicY = dynamicY + vY;
 
-	dynamicX = clampX(dynamicX, 5, gfx.ScreenWidth, vX);
-	dynamicY = clampY(dynamicY, 5, gfx.ScreenHeight, vY);
+	dynamicX = clampX(dynamicX, radius, gfx.ScreenWidth, vX);
+	dynamicY = clampY(dynamicY, radius, gfx.ScreenHeight, vY);
 }
 
 void Game::ComposeFrame()
@@ -182,10 +182,10 @@ void  Game::DrawBox(int x, int y, int r, int g, int b)
 
 bool Game::OverlapTest(int box0x, int box0y, int box1x, int box1y)
 {
-    const int left_box0 = box0x - 5;
-    const int right_box0 = box0x + 5;
-    const int top_box0 = box0y - 5;
-    const int bottom_box0 = box0y + 5;
+    const int left_box0 = box0x - radius;
+    const int right_box0 = box0x + radius;
+    const int top_box0 = box0y - radius;
+    const int bottom_box0 = box0y + radius;
 
     const int left_box1 = box1x - 5;
     const int right_box1 = box1x + 5;
@@ -204,7 +204,7 @@ int Game::clampX(int x, int radius, int screenWidth, int& vX)
     if (x + radius >= screenWidth)
     {
 		x = screenWidth - radius - 1;
-        vX - 0; 
+        vX = 0; 
 	}
 	else if (x - radius < 0)
     {
