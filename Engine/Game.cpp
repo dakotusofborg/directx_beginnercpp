@@ -111,41 +111,8 @@ void Game::UpdateModel()
     dynamicX = dynamicX + vX;
 	dynamicY = dynamicY + vY;
 
-    if (dynamicX + 5 >= gfx.ScreenWidth)
-    {
-        dynamicX = gfx.ScreenWidth - 6;
-        vX = 0;
-    }
-    if (dynamicX - 5 < 0)
-    {
-        dynamicX = 5;
-        vX = 0;
-    }
-    if (dynamicY + 5 >= gfx.ScreenHeight)
-    {
-        dynamicY = gfx.ScreenHeight - 6;
-        vY = 0;
-    }
-    if (dynamicY - 5 < 0)
-    {
-        dynamicY = 5;
-        vY = 0;
-    }
-
-    /*shapeIsChanged = false;
-    if (!(x > 200 && x < 300))
-    {
-        shapeIsChanged = true;
-    }*/
-
-    /*if (x >= x - tolerance && x <= x + tolerance && y >= y - tolerance && y <= y + tolerance)
-    {
-        r = 255; g = 0; b = 0;
-    }
-    else
-    {
-        r = 255; g = 255; b = 255;
-	}*/
+	dynamicX = clampX(dynamicX, 5, gfx.ScreenWidth, vX);
+	dynamicY = clampY(dynamicY, 5, gfx.ScreenHeight, vY);
 }
 
 void Game::ComposeFrame()
@@ -230,4 +197,34 @@ bool Game::OverlapTest(int box0x, int box0y, int box1x, int box1y)
         right_box0 >= left_box1 &&
         top_box0 <= bottom_box1 &&
         bottom_box0 >= top_box1;
+}
+
+int Game::clampX(int x, int radius, int screenWidth, int& vX)
+{
+    if (x + radius >= screenWidth)
+    {
+		x = screenWidth - radius - 1;
+        vX - 0; 
+	}
+	else if (x - radius < 0)
+    {
+        x = radius;
+		vX = 0;
+    }
+    return x;
+}
+
+int Game::clampY(int y, int radius, int screenHeight, int& vY)
+{
+    if (y + radius >= screenHeight)
+    {
+        y = screenHeight - radius - 1;
+        vY = 0;
+    }
+    else if (y - radius < 0)
+    {
+        y = radius;
+        vY = 0;
+    }
+    return y;
 }
